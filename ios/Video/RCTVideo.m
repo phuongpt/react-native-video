@@ -926,7 +926,7 @@ static int const RCTVideoUnset = -1;
   [self applyModifiers];
 }
 
-- (void)setPlayWithRecording:(NSString *)playWithRecording
+- (void)setPlayWithRecording:(BOOL)playWithRecording
 {
   _playWithRecording = playWithRecording;
   [self applyModifiers];

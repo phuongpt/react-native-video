@@ -76,6 +76,7 @@ static int const RCTVideoUnset = -1;
   BOOL _pictureInPicture;
   NSString * _ignoreSilentSwitch;
   NSString * _mixWithOthers;
+  BOOL _playWithRecording;
   NSString * _resizeMode;
   BOOL _fullscreen;
   BOOL _fullscreenAutorotate;
@@ -118,6 +119,7 @@ static int const RCTVideoUnset = -1;
     _allowsExternalPlayback = YES;
     _playWhenInactive = false;
     _pictureInPicture = false;
+    _playWithRecording = false;
     _ignoreSilentSwitch = @"inherit"; // inherit, ignore, obey
     _mixWithOthers = @"inherit"; // inherit, mix, duck
 #if TARGET_OS_IOS
@@ -924,6 +926,12 @@ static int const RCTVideoUnset = -1;
   [self applyModifiers];
 }
 
+- (void)setPlayWithRecording:(NSString *)playWithRecording
+{
+  _playWithRecording = playWithRecording;
+  [self applyModifiers];
+}
+
 - (void)setPaused:(BOOL)paused
 {
   if (paused) {
@@ -938,6 +946,10 @@ static int const RCTVideoUnset = -1;
       category = AVAudioSessionCategoryPlayback;
     } else if([_ignoreSilentSwitch isEqualToString:@"obey"]) {
       category = AVAudioSessionCategoryAmbient;
+    }
+      
+    if(_playWithRecording) {
+      category = AVAudioSessionCategoryPlayAndRecord;
     }
 
     if([_mixWithOthers isEqualToString:@"mix"]) {
